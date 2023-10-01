@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Dashboard</h1>
+    <table>
+        <tr>
+            <th>Die</th>
+            <th>Element</th>
+            <th>Condition</th>
+            <th>Count</th>
+        </tr>
+        {% for row in data %}
+            <tr>
+                <td>{{ row['Die'] }}</td>
+                <td>{{ row['Element'] }}</td>
+                <td>
+                    {% for condition, count in row['Conditions'].items() %}
+                        {{ condition }}: {{ count }}<br>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

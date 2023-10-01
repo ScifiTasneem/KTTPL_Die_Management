@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <form method="post">
+
+        {{ form.csrf_token }}
+        <div>
+            {{ form.unique_code(class="form-control", placeholder="Enter unique code") }}
+            {% if form.unique_code.errors %}
+                <div>
+                    {{ form.unique_code.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <br>
+
+        <select name="die_details">
+            <option value="Under Repair">Dies In Welding</option>
+            <option value="Under Repair">Dies In GR (General Repairing)</option>
+            <option value="Under Repair">Dies In Sinking (Vendor)</option>
+            <option value="Under Repair">Dies In Sinking (Inhouse)</option>
+            <option value="Under Repair">Dies In Polishing</option>
+            <option value="Under Repair">Dies In Vent Holes</option>
+            <option value="Under Repair">Dies In Stamping</option>
+            <option value="Under Repair">Dies In Inspection</option>
+            <option value="Under Repair">Dies In Nitriding</option>
+            <option value="Under Repair">Die Readiness (Heatcode, Pins, Coller, Bridge, Spring-Remaining)</option>
+            <option value="Ready">Dies Ready</option>
+            <option value="Production">Die Sent to Production</option>
+        </select>
+
+        <input type="submit">
+    </form>
+
+
+</body>
+</html>

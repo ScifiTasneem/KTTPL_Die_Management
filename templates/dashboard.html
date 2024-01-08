@@ -1,28 +1,177 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard</title>
+
+   <title>Dashboard</title>
+    <link rel="icon" href="{{url_for('static', filename='images/favicon.png')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/dash-kanban.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/Lato-Regular.ttf') }}" type="font/ttf">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/Montserrat-Medium.ttf') }}" type="font/ttf">
+
 </head>
 <body>
-    <h1>Dashboard</h1>
-    <table>
-        <tr>
-            <th>Die</th>
-            <th>Element</th>
-            <th>Condition</th>
-            <th>Count</th>
-        </tr>
-        {% for row in data %}
-            <tr>
-                <td>{{ row['Die'] }}</td>
-                <td>{{ row['Element'] }}</td>
-                <td>
-                    {% for condition, count in row['Conditions'].items() %}
-                        {{ condition }}: {{ count }}<br>
-                    {% endfor %}
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+
+     <!-- ------------start main navigation bar--------------- -->
+    <div class="logo1">
+
+        <div class="logo left-logo">
+<!--            <img src="logo.png" alt="Right Logo" class="kalyani"/>-->
+            <img src="{{url_for('static', filename='images/logo.png')}}" alt="Right Logo" class="kalyani" />
+        </div>
+
+        <div class="app-head">
+           <h2>Die Management</h2>
+        </div>
+
+        <div class="all-cont">
+            <nav>
+               <ul>
+                   <li><a href="{{ url_for('hatebur_form') }}">Hatebur</a></li>
+                   <li><a href="{{ url_for('login') }}">Log Out</a></li>
+               </ul>
+           </nav>
+        </div>
+    </div>
+
+      <div class="head1">
+          <div class="head-name">
+                <p>Digital Kanban Andon Board</p>
+          </div>
+          <div class="nav-sec">
+            <div class="first">
+                <div class="nav-point"></div>
+                <div class="nav-title1">
+                    Ready
+                </div>
+            </div>
+            <div class="first">
+                <div class="nav-point1"></div>
+                <div class="nav-title">UnderRepair</div>
+
+            </div>
+            <div class="first">
+                <div class="nav-point2"></div>
+                <div class="nav-title">
+                    Unavailable
+                </div>
+            </div>
+            <div class="first">
+                <div class="nav-point3"></div>
+                <div class="nav-title">
+                    Production
+                </div>
+            </div>
+          </div>
+      </div>
+
+    <!--------------------end navigation bar------------ -->
+        <div class="header-main-box">
+            <div class="data-container die-headers">
+                 <div class="die-name-header die-info">
+                     <div class="die-name">
+                         <div><strong>Die Number</strong></div>
+                     </div>
+                 </div>
+                <div class="die-name-header die-info">
+                     <div class="die-name">
+                         <div><strong>Upset Top</strong></div>
+                     </div>
+                 </div>
+                <div class="die-name-header die-info">
+                     <div class="die-name">
+                         <div><strong>Upset Bottom</strong></div>
+                     </div>
+                 </div>
+                <div class="die-name-header die-info">
+                     <div class="die-name">
+                         <div><strong>Blocker Top</strong></div>
+                     </div>
+                 </div>
+                <div class="die-name-header die-info">
+                     <div class="die-name">
+                         <div><strong>Blocker Bottom</strong></div>
+                     </div>
+                 </div>
+                <div class="die-name-header die-info">
+                     <div class="die-name">
+                         <div><strong>Finisher Top</strong></div>
+                     </div>
+                 </div><div class="die-name-header die-info">
+                     <div class="die-name">
+                         <div><strong>Finisher Bottom</strong></div>
+                     </div>
+                 </div>
+                <div class="die-name-header die-info">
+                     <div class="die-name">
+                         <div><strong>Trim Die</strong></div>
+                     </div>
+                 </div>
+                <div class="die-name-header die-info">
+                     <div class="die-name">
+                         <div><strong>Trim Punch</strong></div>
+                     </div>
+                 </div>
+                <div class="die-name-header die-info">
+                     <div class="die-name">
+                         <div><strong>Piercing Punch</strong></div>
+                     </div>
+                 </div>
+                <div class="die-name-header die-info">
+                     <div class="die-name">
+                         <div><strong>Padding Top</strong></div>
+                     </div>
+                 </div>
+                <div class="die-name-header die-info">
+                     <div class="die-name">
+                         <div><strong>Padding Bottom</strong></div>
+                     </div>
+                 </div>
+                <div class="die-name-header die-info">
+                     <div class="die-name">
+                         <div><strong>Stripper Plate</strong></div>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <div class="main-box">
+
+            <div class="data-container">
+                {% for row in data %}
+                    {% if loop.index0 % 12 == 0 %}
+                        <div class="die-name-header">
+                            <strong>{{ row['Die'] }}</strong>
+                        </div>
+                    {% endif %}
+                    <div class="data-item die-info">
+
+                                {% for condition, count in row['Conditions'].items() %}
+                                    <div class="custom-div element{{ loop.index }}">{{ count }}</div>
+                                {% endfor %}
+
+
+                    </div>
+                    {% if loop.index0 % 12 == 11 or loop.last %}
+                        </div><div class="data-container">
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+     <footer class="footer">
+
+        <div class="data">
+<!--            <img src="ai.png" alt="Right Logo" class="ai"/>-->
+            <img src="{{url_for('static', filename='images/ai.png')}}" alt="Right Logo" class="ai" />
+            <p>Driven Manufacturing</p>
+        </div>
+
+        <div class="logo right-logo">
+<!--            <img src="scifilogo.png" alt="Right Logo" class="scifi"/>-->
+            <img src="{{url_for('static', filename='images/scifilogo.png')}}" alt="Right Logo" class="scifi" />
+         </div>
+
+    </footer>
+
 </body>
 </html>

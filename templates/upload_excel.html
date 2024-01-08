@@ -2,27 +2,61 @@
 <html lang="en">
 
 <head>
-    <title>Upload/View Excel</title>
+
+    <title>Upload Excel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/Lato-Regular.ttf') }}" type="font/ttf">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/Montserrat-Medium.ttf') }}" type="font/ttf">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/dashboard.css')}}">
+    <link rel="icon" href="{{url_for('static', filename='images/favicon.png')}}">
+
 </head>
 
 <body>
+       <!-- ------------start main navigation bar--------------- -->
+    <div class="logo1">
+        <div class="logo left-logo">
+            <img src="{{url_for('static', filename='images/logo.png')}}" alt="Right Logo" class="kalyani" />
+        </div>
+        <div class="app-head">
+            <h2>Die Management</h2>
+        </div>
+        <div class="all-cont">
+            <nav>
+               <ul>
+                   <li><a href="{{ url_for('login') }}">Log Out</a></li>
+               </ul>
+           </nav>
+        </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <ul class=flashes>
-        {% for category, message in messages %}
-          <li class="{{ category }}">{{ message }}</li>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+    </div>
+      <div class="head1">
+          <div class="head-name">
+                <p>Supervisor Form</p>
+          </div>
+     </div>
 
-    <h1>Upload Excel File (.xlsx)</h1>
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" name="file"
-            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
-        <input type="submit" value="Submit">
-    </form>
+    <!--------------------end navigation bar------------ -->
+     <div class="main-box">
+         <div class="form-container">
+            <h3>Upload Excel File (.xlsx)</h3>
+            <form method="post" enctype="multipart/form-data">
+                <input type="file" name="file"
+                       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+     </div>
+
+
+    <footer class="footer">
+        <div class="data">
+            <img src="{{url_for('static', filename='images/ai.png')}}" alt="Right Logo" class="ai" />
+            <p>Driven Manufacturing</p>
+        </div>
+        <div class="logo right-logo">
+            <img src="{{url_for('static', filename='images/scifilogo.png')}}" alt="Right Logo" class="scifi" />
+         </div>
+    </footer>
 </body>
 
 </html>

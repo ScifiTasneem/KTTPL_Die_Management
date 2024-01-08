@@ -1,42 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Die Form</title>
+    <link rel="icon" href="{{url_for('static', filename='images/favicon.png')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/dashboard.css')}}">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:wght@500&display=swap" rel="stylesheet">
 </head>
+
 <body>
-
-    <form method="post">
-
-        {{ form.csrf_token }}
-        <div>
-            {{ form.unique_code(class="form-control", placeholder="Enter unique code") }}
-            {% if form.unique_code.errors %}
-                <div>
-                    {{ form.unique_code.errors[0] }}
-                </div>
-            {% endif %}
+     <!-- ------------start main navigation bar--------------- -->
+    <div class="logo1">
+        <div class="logo left-logo">
+            <img src="{{url_for('static', filename='images/logo.png')}}" alt="Right Logo" class="kalyani" />
         </div>
+        <div class="app-head">
+            <h3>Die Management</h3>
+        </div>
+        <div class="all-cont">
+            <nav>
+               <ul>
+                   <li><a href="{{ url_for('hatebur_form')}}">Hatebur</a></li>
+                   <li><a href="{{ url_for('login') }}">Log Out</a></li>
+               </ul>
+           </nav>
+        </div>
+    </div>
 
-        <br>
+      <div class="head1">
+          <div class="head-name">
+                <p>Supervisor Form</p>
+          </div>
+     </div>
+    <!--------------------end navigation bar------------ -->
 
-        <select name="die_details">
-            <option value="Under Repair">Dies In Welding</option>
-            <option value="Under Repair">Dies In GR (General Repairing)</option>
-            <option value="Under Repair">Dies In Sinking (Vendor)</option>
-            <option value="Under Repair">Dies In Sinking (Inhouse)</option>
-            <option value="Under Repair">Dies In Polishing</option>
-            <option value="Under Repair">Dies In Vent Holes</option>
-            <option value="Under Repair">Dies In Stamping</option>
-            <option value="Under Repair">Dies In Inspection</option>
-            <option value="Under Repair">Dies In Nitriding</option>
-            <option value="Under Repair">Die Readiness (Heatcode, Pins, Coller, Bridge, Spring-Remaining)</option>
-            <option value="Ready">Dies Ready</option>
-            <option value="Production">Die Sent to Production</option>
-        </select>
+    <div class="main-box">
+        <div class="form-container">
+            <form method="post">
+                {{ form.csrf_token }}
+                <div>
+                    {{ form.unique_code(class="form-control", placeholder="Enter unique code") }}
+                    {% if form.unique_code.errors %}
+                        <div>
+                            {{ form.unique_code.errors[0] }}
+                        </div>
+                    {% endif %}
+                </div>
 
-        <input type="submit">
-    </form>
+                <br>
+
+                <select name="die_details">
+                    <option value="1">Dies In Welding</option>
+                    <option value="2">Dies In GR (General Repairing)</option>
+                    <option value="3">Dies In Sinking (Vendor)</option>
+                    <option value="4">Dies In Sinking (Inhouse)</option>
+                    <option value="5">Dies In Polishing</option>
+                    <option value="6">Dies In Vent Holes</option>
+                    <option value="7">Dies In Inspection</option>
+                    <option value="8">Dies In Nitriding</option>
+                    <option value="9">Die Readiness (Heatcode, Pins, Coller, Bridge, Spring-Remaining)</option>
+                    <option value="10">Dies Ready</option>
+                    <option value="11">Die Sent to Production</option>
+                    <option value="12">Die Unavailable</option>
+                </select>
+
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="data">
+            <img src="{{url_for('static', filename='images/ai.png')}}" alt="Right Logo" class="ai" />
+            <p>Driven Manufacturing</p>
+        </div>
+        <div class="logo right-logo">
+            <img src="{{url_for('static', filename='images/scifilogo.png')}}" alt="Right Logo" class="scifi" />
+         </div>
+    </footer>
 
 
 </body>

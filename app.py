@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from wtforms import StringField, validators, Form
 import configparser
 import pyodbc
-import random
+import datetime
 
 global dieList
 
@@ -47,6 +47,19 @@ class DieForm(Form):
 
 
 @app.route('/', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        print(username, password)
+        if username == 'admin' and password == 'ktfl@123':
+            return redirect(url_for('upload'))
+        else:
+            return redirect(url_for('login'))
+    return render_template('login.html')
+
+
+@app.route('/upload', methods=['POST', 'GET'])
 def upload():
     global dieList
 
@@ -92,24 +105,29 @@ def create_table():
 
 
 def insert_values():
-    try:
-        global dieList
+    global dieList
 
-        condition = ['Ready', 'Under Repair', 'Production', 'Unavailable']
-        for die in dieList:
-            die = str(die)
-            for key, value in dieDict.items():
-                if die == value[0]:
-                    try:
-                        insert_query = f"INSERT INTO DIE_NO{die} (UNIQUE_CODE, ELEMENT, CONDITION) VALUES (?,?,?)"
-                        values = key, value[1], random.choice(condition)
-                        cursor.execute(insert_query, values).commit()
-                    except pyodbc.Error:
+    for die in dieList:
+        check_query = f'SELECT UNIQUE_CODE FROM DIE_NO{die}'
+        result = cursor.execute(check_query).fetchone()
+
+        if result is None:
+            try:
+                die = str(die)
+                for key, value in dieDict.items():
+                    if die == value[0]:
+                        try:
+                            insert_query = f"INSERT INTO DIE_NO{die} (UNIQUE_CODE, ELEMENT) VALUES (?,?)"
+                            values = key, value[1]
+                            cursor.execute(insert_query, values).commit()
+                        except pyodbc.Error:
+                            pass
+                    else:
                         pass
-                else:
-                    pass
-    except KeyError:
-        return redirect(url_for('upload'))
+            except KeyError:
+                return redirect(url_for('upload'))
+        else:
+            pass
 
 
 @app.route('/die_form', methods=['POST', 'GET'])
@@ -123,10 +141,32 @@ def die_form():
     if request.method == 'POST' and form.validate():
         unique_code = form.unique_code.data
         die_condition = request.form.get('die_details')
-        print(unique_code, die_condition)
+        condition_data = die_condition
+        print(die_condition, unique_code)
+
+        conditionDict = {'1': 'Welding', '2': 'GR', '3': 'Sinking Vendor', '4': 'Sinking Inhouse',
+                         '5': 'Polishing', '6': 'Vent Holes', '7': 'Inspection', '8': 'Nitriding', '9': 'Readiness',
+                         '10': 'Production', '11': 'Unavailable'}
+
+        current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        stageData = conditionDict.get(condition_data)
+        stageValues = current_time, unique_code, stageData
+
+        form_data_query = 'INSERT INTO DIE_TRACE (TIME_STAMP, UNIQUE_CODE, STAGE) VALUES (?,?,?)'
+        cursor.execute(form_data_query, stageValues).commit()
+
+        if die_condition in ['1', '2', '3', '4', '5', '6', '7', '8']:
+            die_condition = 'Under Repair'
+        elif die_condition in ['9', '10']:
+            die_condition = 'Ready'
+        elif die_condition == '11':
+            die_condition = 'Production'
+        elif die_condition == '12':
+            die_condition = 'Unavailable'
 
         value = dieDict.get(unique_code)
-        print(value[0], value[1])
+        print(die_condition, value)
+
         form_insert_query = f"UPDATE DIE_NO{value[0]} SET CONDITION='{die_condition}' " \
                             f"WHERE ELEMENT='{value[1]}' AND UNIQUE_CODE={unique_code}"
         cursor.execute(form_insert_query).commit()
@@ -156,6 +196,13 @@ def dashboard():
     return render_template('dashboard.html', data=data)
 
 
+@app.route('/hatebur_form')
+def hatebur_form():
+    form = DieForm(request.form)
+
+    return render_template('hatebur_form.html', form=form)
+
+
 if __name__ == '__main__':
-    webbrowser.open_new_tab('http://127.0.0.1:5000')
-    app.run(debug=True, use_reloader=False)
+    webbrowser.open_new_tab('http://127.0.0.1:5010')
+    app.run(debug=True, use_reloader=False, port=5010)

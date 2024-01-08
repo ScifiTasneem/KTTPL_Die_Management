@@ -1,8 +1,8 @@
-
 body{
     margin: 0;
     padding: 0;
 }
+
 .logo1 {
 
     display: flex;
@@ -237,6 +237,7 @@ body{
     align-items: center;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
+
 .data{
     display: flex;
     gap: 30px;
